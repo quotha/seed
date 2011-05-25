@@ -23,28 +23,28 @@ module Seed
         h     hits allowd
 =end
   
-  def batting_avg(h=0, ab=0)
-    h.to_f/ab.to_f
+  def batting_avg(stats)
+    stats['h'].to_f/stats['ab'].to_f
   end
   
-  def on_base_per(h=0, bb=0, hbp=0, ab=0, sf=0)
-    (h+bb+hbp).to_f/(ab+bb+hbp+sf).to_f
+  def on_base_per(stats)
+    (stats['h']+stats['bb']+stats['hbp']).to_f/(stats['ab']+stats['bb']+stats['hbp']+stats['sf']).to_f
   end
   
-  def slugging_per(s=0, d=0, t=0, hr=0, ab=0)
-    total_bases(s,d,t,hr).to_f/ab.to_f
+  def slugging_per(stats)
+    total_bases(stats).to_f/stats['ab'].to_f
   end
   
   def runs_created(h=0, bb=0, s=0, d=0, t=0, hr=0, ab=0)
-    ((h+bb)*total_bases(s,d,t,hr)).to_f/(ab+bb).to_f
+    ((stats['h']+bb)*total_bases(s,d,t,hr)).to_f/(stats['ab']+bb).to_f
   end
   
   def on_base_plus_slugging(s=0, d=0, t=0, hr=0, ab=0, h=0, bb=0, hbp=0, sf=0)
-    slugging_per(s, d, t, hr, ab)+on_base_per(h, bb, hbp, ab, sf)
+    slugging_per(s, d, t, hr, ab)+on_base_per(stats['h'], bb, hbp, stats['ab'], sf)
   end
   
-  def total_bases(s=0, d=0, t=0, hr=0)
-    s+(2*d)+(3*t)+(4*hr)
+  def total_bases(stats)
+    stats['s']+(2*stats['d'])+(3*stats['t'])+(4*stats['hr'])
   end
   
   def earned_run_avg(era=0, ip=0)
@@ -52,7 +52,7 @@ module Seed
   end
   
   def whip(bb=0, h=0, ip=0)
-    (bb+h).to_f/format_ip(ip)
+    (bb+stats['h']).to_f/format_ip(ip)
   end
   
   def format_ip(ip)
