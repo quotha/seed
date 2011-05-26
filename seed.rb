@@ -35,24 +35,24 @@ module Seed
     total_bases(stats).to_f/stats['ab'].to_f
   end
   
-  def runs_created(h=0, bb=0, s=0, d=0, t=0, hr=0, ab=0)
-    ((stats['h']+bb)*total_bases(s,d,t,hr)).to_f/(stats['ab']+bb).to_f
+  def on_base_plus_slugging(stats)
+    slugging_per(stats)+on_base_per(stats)
   end
   
-  def on_base_plus_slugging(s=0, d=0, t=0, hr=0, ab=0, h=0, bb=0, hbp=0, sf=0)
-    slugging_per(s, d, t, hr, ab)+on_base_per(stats['h'], bb, hbp, stats['ab'], sf)
+  def runs_created(stats)
+    ((stats['h']+stats['bb'])*total_bases(stats)).to_f/(stats['ab']+stats['bb']).to_f
   end
   
   def total_bases(stats)
     stats['s']+(2*stats['d'])+(3*stats['t'])+(4*stats['hr'])
   end
   
-  def earned_run_avg(era=0, ip=0)
-    9*(era.to_f/format_ip(ip))
+  def earned_run_avg(stats)
+    9*(stats['era'].to_f/format_ip(stats['ip']))
   end
   
-  def whip(bb=0, h=0, ip=0)
-    (bb+stats['h']).to_f/format_ip(ip)
+  def whip(stats)
+    (stats['bb']+stats['h']).to_f/format_ip(stats['ip'])
   end
   
   def format_ip(ip)
